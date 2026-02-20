@@ -1,73 +1,69 @@
-# React + TypeScript + Vite
+# Botfilter Challenge (React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación en React que:
+- Obtiene los datos del candidato por email
+- Lista posiciones abiertas desde la API
+- Permite ingresar la URL del repo por posición y enviar la postulación
 
-Currently, two official plugins are available:
+## Demo
+- Repo: https://github.com/gianvangeli/botfilter-challenge
+- Deploy: (agregar acá cuando lo hagas) https://<tu-url>.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## API
+Base URL:
+`https://botfilter-h5ddh6dye8exb7ha.centralus-01.azurewebsites.net`
 
-## React Compiler
+Endpoints usados:
+- `GET /api/candidate/get-by-email?email=<EMAIL>`
+- `GET /api/jobs/get-list`
+- `POST /api/candidate/apply-to-job`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+> Nota: Durante el desarrollo, se detectó que el endpoint `apply-to-job` valida `applicationId` además de los campos indicados en el enunciado. Se incluyó ese campo en el payload para cumplir la validación del backend.
 
-## Expanding the ESLint configuration
+## Requisitos cubiertos
+- React
+- Listado de posiciones obtenido desde API
+- Input de repo + botón Submit por posición
+- Envío de postulación con body correcto
+- Manejo de estados de carga y errores en UI
+- UI simple y funcional
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Stack / decisiones
+- React + TypeScript (tipado estricto y componentes claros)
+- Fetch nativo encapsulado en un `apiFetch` con manejo consistente de errores
+- Separación por capas:
+  - `api/` (cliente HTTP + endpoints + types)
+  - `hooks/` (carga de datos y estados)
+  - `components/` (UI reutilizable)
+  - `pages/` (pantalla principal)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Estructura del proyecto
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+src/
+api/
+client.ts
+endpoints.ts
+types.ts
+components/
+JobCard.tsx
+StatusBanner.tsx
+hooks/
+useCandidate.ts
+useJobs.ts
+pages/
+JobsPages.tsx
+App.tsx
+main.tsx
+styles.css
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Cómo correr el proyecto
+Requisitos: Node.js 18+ (recomendado)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Instalar dependencias:
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```

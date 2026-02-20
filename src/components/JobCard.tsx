@@ -42,9 +42,10 @@ export function JobCard({ job, candidate }: Props) {
         setError(null);
 
         const payload: ApplyPayLoad = {
-            uuid: candidate.uuid,
-            jobId: job.id,
-            candidateId: candidate.candidateId,
+            uuid: String(candidate.uuid),
+            jobId: String(job.id),
+            candidateId: String(candidate.candidateId),
+            applicationId: String(candidate.applicationId),
             repoUrl: trimmed,
         };
         
